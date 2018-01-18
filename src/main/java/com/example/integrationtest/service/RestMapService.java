@@ -21,7 +21,7 @@ public class RestMapService {
             String responseJson = new RestTemplate().getForObject(url, String.class);
             Map<String, Object> map = new ObjectMapper().readValue(responseJson, new TypeReference<Map<String, Object>>(){});
             readTypes(map, result);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

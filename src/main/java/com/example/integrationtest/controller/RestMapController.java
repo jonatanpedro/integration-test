@@ -26,10 +26,10 @@ public class RestMapController {
     @PostMapping("/map")
     public String mapRequestUrl(@ModelAttribute MapRestParameterDTO param, Model model) {
 
-        Map<String, String> result = restMapService.retrieveRestMap(param.getUrl());
+        Map<String, String> outPutMap = restMapService.retrieveRestMap(param.getUrl());
 
         model.addAttribute("param", new MapRestParameterDTO());
-        model.addAttribute("jsonMap", result);
+        model.addAttribute("outPutMap", outPutMap);
 
         return "mapper-view";
     }

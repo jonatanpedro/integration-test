@@ -21,7 +21,7 @@
 		        <div id="navbar" class="collapse navbar-collapse">
 		            <ul class="nav navbar-nav">
 						<li>
-							<a href="#" th:href="@{/}">Mapeamento fonte REST</a>
+							<a href="#" th:href="@{/}">REST</a>
 						</li>
 		            </ul>
 		        </div>
@@ -58,8 +58,23 @@
 				</div>
 			</form>
 
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>Campos Entrada</th>
+                    <th>Tipo</th>
+                    <th>Comando</th>
+                </tr>
+                </thead>
 
-
+                <tbody th:remove="${#arrays.isEmpty(outPutMap)} ? all : 'all-but-first'">
+                <tr th:each="map: ${outPutMap}">
+                    <td th:text="${map.key}">id</td>
+                    <td th:text="${map.value}">Integer</td>
+                    <td> </td>
+                </tr>
+                </tbody>
+            </table>
 		</section>
 		
 		<div class="container">
