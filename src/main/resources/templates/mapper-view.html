@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8"/>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet"/>
+	    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
+	    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+	
+	    <title>Supero connect</title>
+	</head>
+	
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+		    <div class="container">
+		        <div class="navbar-header">
+                    <a class="navbar-brand" href="#" th:href="@{/}">CONNECT</a>
+		        </div>
+		        <div id="navbar" class="collapse navbar-collapse">
+		            <ul class="nav navbar-nav">
+						<li>
+							<a href="#" th:href="@{/}">Mapeamento fonte REST</a>
+						</li>
+		            </ul>
+		        </div>
+		    </div>
+		</nav>
+		
+		<section class="container">
+			<h3 class="page-header">
+                Mapeamento fonte REST
+			</h3>
+
+			<form action="#" method="post" th:action="@{/map}" th:object="${param}">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Capturar fonte REST
+					</div>
+					
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<input class="form-control" id="restSource" placeholder="URL serviço REST" th:field="*{url}" />
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<button class="btn btn-default" type="submit">
+								<span class="fa fa-cog"></span>
+								Executar
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+
+
+		</section>
+		
+		<div class="container">
+	    	<hr />
+	    	
+		    <footer>
+		    	<h4>Prova de conceito</h4>
+			</footer>	
+		</div>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>		
+	</body>
+</html>
