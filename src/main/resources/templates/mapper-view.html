@@ -58,25 +58,28 @@
 				</div>
 			</form>
 
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th>Campos Entrada</th>
-                    <th>Tipo</th>
-                    <th>Comando</th>
-                </tr>
-                </thead>
+            <div th:remove="${#arrays.isEmpty(outPutMap)} ? all : 'none'">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Campos Entrada</th>
+                            <th>Tipo</th>
+                            <th>Comando</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="map: ${outPutMap}">
+                            <td th:text="${map.key}">id</td>
+                            <td th:text="${map.value}">Integer</td>
+                            <td> </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-                <tbody th:remove="${#arrays.isEmpty(outPutMap)} ? all : 'all-but-first'">
-                <tr th:each="map: ${outPutMap}">
-                    <td th:text="${map.key}">id</td>
-                    <td th:text="${map.value}">Integer</td>
-                    <td> </td>
-                </tr>
-                </tbody>
-            </table>
+
+            </div>
 		</section>
-		
+
 		<div class="container">
 	    	<hr />
 	    	

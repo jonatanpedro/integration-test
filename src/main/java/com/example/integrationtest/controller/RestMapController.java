@@ -14,23 +14,29 @@ import java.util.Map;
 @Controller
 public class RestMapController {
 
+    public static final String MAPPER_VIEW = "mapper-view";
+    public static final String EMPTY = "";
     @Autowired
     private RestMapService restMapService;
 
     @RequestMapping("/")
     public String getIndex(Model model){
         model.addAttribute("param", new MapRestParameterDTO());
-        return "mapper-view";
+        return MAPPER_VIEW;
     }
 
     @PostMapping("/map")
     public String mapRequestUrl(@ModelAttribute MapRestParameterDTO param, Model model) {
 
-        Map<String, String> outPutMap = restMapService.retrieveRestMap(param.getUrl());
+        Map<String, String> outPutMap = null;
+
+        if (param != null && (param.getUrl() != null && !EMPTY.equals(param.getUrl()))) {
+            outPutMap = restMapService.retrieveRestMap(param.getUrl());
+        }
 
         model.addAttribute("param", new MapRestParameterDTO());
         model.addAttribute("outPutMap", outPutMap);
 
-        return "mapper-view";
+        return MAPPER_VIEW;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.integrationtest.service;
 
+import com.example.integrationtest.util.FieldUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -31,40 +32,23 @@ public class RestMapService {
         return result;
     }
 
-
     public void readTypes(final Map<String, Object> map, final Map<String, String> result){
         map.entrySet()
                 .stream()
                 .forEach(entry -> {
-                    if("ARRAY".equals(identifyType(entry.getValue()))) {
+                    if(FieldUtil.ARRAY.equals(FieldUtil.identifyType(entry.getValue()))) {
                         List<LinkedHashMap<String, Object>> list = (List<LinkedHashMap<String, Object>>) entry.getValue();
                         Map<String, Object> subMap = new HashMap<>();
                         for (LinkedHashMap<String, Object> map1 : list) {
                             subMap.putAll(map1);
                         }
                         readTypes(subMap, result);
-                    }else if("MAP".equals(identifyType(entry.getValue()))){
+                    }else if(FieldUtil.MAP.equals(FieldUtil.identifyType(entry.getValue()))){
                         Map<String, Object> subMap = (LinkedHashMap<String, Object>)entry.getValue();
                         readTypes(subMap, result);
                     }else{
-                        result.put(entry.getKey(),identifyType(entry.getValue()));
+                        result.put(entry.getKey(),FieldUtil.identifyType(entry.getValue()));
                     }
                 });
-    }
-
-    public String identifyType(Object type){
-        if(type instanceof Number){
-            return "NUMBER";
-        }else if(type instanceof String){
-            return "STRING";
-        }else if(type instanceof List){
-            return "ARRAY";
-        }else if(type instanceof Boolean) {
-            return "BOOLEAN";
-        }else if(type instanceof LinkedHashMap){
-            return "MAP";
-        } else{
-            return null;
-        }
     }
 }
