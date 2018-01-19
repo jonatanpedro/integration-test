@@ -4,8 +4,8 @@
 		<meta charset="UTF-8"/>
 		
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"/>
-	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" rel="stylesheet"/>
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css" rel="stylesheet"/>
 	    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
 	    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
 	
@@ -13,53 +13,56 @@
 	</head>
 	
 	<body>
-		<nav class="navbar navbar-default navbar-fixed-top">
-		    <div class="container">
-		        <div class="navbar-header">
-                    <a class="navbar-brand" href="#" th:href="@{/}">CONNECT</a>
-		        </div>
-		        <div id="navbar" class="collapse navbar-collapse">
-		            <ul class="nav navbar-nav">
-						<li>
-							<a href="#" th:href="@{/}">REST</a>
-						</li>
-		            </ul>
-		        </div>
-		    </div>
-		</nav>
-		
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">REST</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">SOAP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Fluxos</a>
+            </li>
+        </ul>
+
 		<section class="container">
 			<h3 class="page-header">
                 Mapeamento fonte REST
 			</h3>
 
-			<form action="#" method="post" th:action="@{/map}" th:object="${param}">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Capturar fonte REST
-					</div>
-					
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="form-group">
-									<input class="form-control" id="restSource" placeholder="URL serviço REST" th:field="*{url}" />
-								</div>
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<button class="btn btn-default" type="submit">
-								<span class="fa fa-cog"></span>
-								Executar
-							</button>
-						</div>
-					</div>
-				</div>
-			</form>
+            <div class="jumbotron">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Capturar fonte REST
+                    </div>
 
-            <div th:remove="${#arrays.isEmpty(outPutMap)} ? all : 'none'">
-                <table class="table table-striped table-bordered">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input class="form-control" id="restSource" placeholder="URL serviço REST" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button id="btnExecuteMap" class="btn btn-primary btn-default" type="button">
+                                <span class="fa fa-cog"></span>
+                                Executar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result">
+
+                <h4>
+                    Mapeamento dados entrada
+                </h4>
+
+                <table id="tblrest" class="table table-striped table-bordered">
                     <thead>
                         <tr>
                             <th>Campos Entrada</th>
@@ -68,16 +71,71 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="map: ${outPutMap}">
-                            <td th:text="${map.key}">id</td>
-                            <td th:text="${map.value}">Integer</td>
-                            <td> </td>
-                        </tr>
                     </tbody>
                 </table>
 
+                <h4>
+                    Mapeamento dados saída
+                </h4>
+
+                <div id="accordion" role="tablist" class="mb-10">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne">
+                            <h5 class="mb-0">
+                                <a data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne">
+                                    Base de dados (MySQL)
+                                </a>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+
+                                <input type="checkbox" id="bd" value="bd">
+                                <label for="bd">Base de dados</label>
+
+                                <div>
+                                    <select id="tabelabd" class="col-sm-6" disabled>
+                                        <option value="selecione">selecione</option>
+                                    </select>
+
+                                    <button id="btnRecColunas" class="btn btn-primary btn-default mt-10" type="button">
+                                        <span class="fa fa-cog"></span>
+                                        Recuperar Colunas
+                                    </button>
+
+                                    <div id="colunasbd">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingTwo">
+                            <h5 class="mb-0">
+                                <a class="collapsed" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo">
+                                    Console
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+                                <input type="checkbox" id="console" value="console">
+                                <label for="console">Saída console</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-default mt-10" type="button">
+                    <span class="fa fa-floppy-o"></span>
+                    Salvar
+                </button>
 
             </div>
+
 		</section>
 
 		<div class="container">
@@ -87,8 +145,11 @@
 		    	<h4>Prova de conceito</h4>
 			</footer>	
 		</div>
-		
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>		
-	</body>
+
+        <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script src="../static/js/script.js" th:src="@{/js/script.js}"></script>
+    </body>
 </html>
