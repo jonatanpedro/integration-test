@@ -28,8 +28,8 @@ $( "#btnExecuteMap" ).on( "click", function () {
         success: function (data) {
             restMap = data;
             var keys = Object.keys(data);
-            for(var i=0; i < keys.length; i++){
-                $('#tblrest').append('<tr><td>' + keys[i] + '</td><td>' + data[keys[i]] + '</td><td> </td></tr>')
+            for(let i=0; i < keys.length; i++){
+                $('#tblrest').append('<tr><td>' + keys[i] + '</td><td>' + data[keys[i]] + '</td></tr>')
             }
             $("#restSource").val("");
         },
@@ -40,10 +40,28 @@ $( "#btnExecuteMap" ).on( "click", function () {
 });
 
 $( "#btnRecColunas" ).on( "click", function () {
-    let selectedTable = $("#tabelabd").val();
+    selectedTable = $("#tabelabd").val();
     if (selectedTable) {
-        $.get("/rest/tables", function (data) {
-            console.log(data);
+        $.get("/rest/columns/" + selectedTable, function (data) {
+            mapColumns = data;
+            var keys = Object.keys(data);
+            for(let i=0; i < keys.length; i++){
+                $('#tblcolumns').append('<tr id="' + keys[i] + '" ><td>' + keys[i] + '</td><td>' + data[keys[i]] + '</td><td>' + geSelectFields(restMap, keys[i]) + '</td></tr>')
+            }
         });
     }
-} );
+});
+
+function geSelectFields(map, rowname){
+
+    let keys = Object.keys(map);
+    let select = "<select id='row-" + rowname + "' class='col-sm-6'>";
+    select += "<option> -- </option>";
+
+    for(let i=0; i < keys.length; i++){
+        select += "<option>" + keys[i] + "</option>";
+    }
+    select +="</select>";
+
+    return select;
+}

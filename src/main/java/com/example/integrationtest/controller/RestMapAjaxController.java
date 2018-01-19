@@ -36,4 +36,9 @@ public class RestMapAjaxController {
 
         return outPutMap;
     }
+
+    @GetMapping(value = "/columns/{table_name}")
+    public Map<String, String> requestColumnNames(@PathVariable("table_name") String tableName){
+        return databaseMetaRepository.retrieveAvaliableColumns(tableName);
+    }
 }
