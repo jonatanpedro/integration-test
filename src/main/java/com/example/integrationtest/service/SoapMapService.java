@@ -1,47 +1,41 @@
 package com.example.integrationtest.service;
 
+import com.example.integrationtest.dto.DataMap;
 import com.predic8.schema.*;
 import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
 
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SoapMapService {
 
-    public static void main(String[] args) {
-        new SoapMapService().parse();
-    }
-
-    public void parse() {
-        try {
-            URL wsdlURL = this.getClass().getResource("/rubi_Synccom_senior_g5_rh_fp_integracaoOracle.wsdl");
-            WSDLParser parser = new WSDLParser();
-            Definitions wsdl = parser.parse(wsdlURL.toURI().toString());
-            for (Schema schema: wsdl.getLocalTypes().getSchemas()) {
-                parseSchema(schema);
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+    public Map<String, DataMap> retrieveSoapMap(String url){
+        Map<String, DataMap> result = new HashMap<>();
+        WSDLParser parser = new WSDLParser();
+        Definitions wsdl = parser.parse(url);
+        for (Schema schema: wsdl.getLocalTypes().getSchemas()) {
+            parseSchema(schema, result);
         }
+        return result;
     }
 
-    private void parseSchema(Schema schema) {
+    private void parseSchema(Schema schema, Map<String, DataMap> result) {
         for (ComplexType complexType: schema.getComplexTypes()) {
             SchemaComponent model = complexType.getModel();
             if (model instanceof Sequence) {
                 Sequence sequence = (Sequence) model;
-                parseSequence(sequence);
+                parseSequence(sequence, result);
             }
         }
     }
 
-    private void parseSequence(Sequence sequence) {
+    private void parseSequence(Sequence sequence, Map<String, DataMap> result) {
         for (SchemaComponent schemaComponent: sequence.getParticles()) {
-            String name = schemaComponent.getName();
+            String key = schemaComponent.getName();
             if (schemaComponent instanceof Element) {
-                String localPart = ((Element) schemaComponent).getType().getLocalPart();
-                System.out.println("Attr name: " + name + ", Attr type: " + localPart);
+                String type = ((Element) schemaComponent).getType().getLocalPart();
+                result.put(key,new DataMap(type.toUpperCase(), null));
             }
         }
     }
