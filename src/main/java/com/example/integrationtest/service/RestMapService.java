@@ -1,5 +1,6 @@
 package com.example.integrationtest.service;
 
+import com.example.integrationtest.dto.DataMap;
 import com.example.integrationtest.util.FieldUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,15 +13,16 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RestMapService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public Map<String, String> retrieveRestMap(String url){
+    public Map<String, DataMap> retrieveRestMap(String url){
 
-        Map<String, String> result = new HashMap<>();
+        Map<String, DataMap> result = new HashMap<>();
         try {
             String responseJson = new RestTemplate().getForObject(url, String.class);
             Map<String, Object> map = new ObjectMapper().readValue(responseJson, new TypeReference<Map<String, Object>>(){});
@@ -32,7 +34,7 @@ public class RestMapService {
         return result;
     }
 
-    public void readTypes(final Map<String, Object> map, final Map<String, String> result){
+    public void readTypes(final Map<String, Object> map, final Map<String, DataMap> result){
         map.entrySet()
                 .stream()
                 .forEach(entry -> {
@@ -47,7 +49,7 @@ public class RestMapService {
                         Map<String, Object> subMap = (LinkedHashMap<String, Object>)entry.getValue();
                         readTypes(subMap, result);
                     }else{
-                        result.put(entry.getKey(),FieldUtil.identifyType(entry.getValue()));
+                        result.put(entry.getKey(),new DataMap(FieldUtil.identifyType(entry.getValue()), null));
                     }
                 });
     }

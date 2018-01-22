@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class DatabaseMetaRepository {
@@ -46,4 +48,28 @@ public class DatabaseMetaRepository {
 
         return result;
     }
+
+    public Map<String, String> retrieveAvaliableColumns(String tableName){
+        Connection connection = null;
+        Map<String, String> result = new HashMap<>();
+        try {
+            connection = dataSource.getConnection();
+            ResultSet resultSet = connection.getMetaData().getColumns(CATALOG, null, tableName, "%");
+            while (resultSet.next()) {
+                result.put(resultSet.getString(4), resultSet.getString(6));
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage());
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.error(e.getMessage());
+                }
+            }
+        }
+        return result;
+    }
+
 }
