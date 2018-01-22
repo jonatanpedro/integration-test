@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8"/>
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+	    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap-theme.min.css" rel="stylesheet"/>
+	    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
+	    <link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"/>
+	
+	    <title>Supero connect</title>
+	</head>
+	
+	<body>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/">REST</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">SOAP</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Fluxos</a>
+            </li>
+        </ul>
+
+        <section>
+
+            <h3 class="page-header">
+                Fluxos de integração
+            </h3>
+
+            <div class="jumbotron">
+                <table id="tblrest" class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Url</th>
+                        <th>Integrate Database</th>
+                        <th>Integrate Console</th>
+                        <th>Controles</th>
+                    </tr>
+                    </thead>
+                    <tbody th:remove="${#arrays.isEmpty(flows)} ? all : 'all-but-first'">
+                        <tr th:each="flow: ${flows}">
+                            <td th:text="${flow.id}">1</td>
+                            <td th:text="${flow.urlBase}">http://something.com</td>
+                            <td th:text="${flow.useTable}">true</td>
+                            <td th:text="${flow.useConsole}">true</td>
+                            <td>
+                                <div class="form-group">
+                                    <button id="btnExecuteFlow" class="btn btn-primary btn-default" type="button">
+                                        <span class="fa fa-cog"></span>
+                                        Executar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+		<div class="container">
+	    	<hr />
+	    	
+		    <footer>
+		    	<h4>Prova de conceito</h4>
+			</footer>	
+		</div>
+
+        <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script src="../static/js/script.js" th:src="@{/js/script.js}"></script>
+    </body>
+</html>

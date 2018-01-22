@@ -20,7 +20,7 @@
             expected-response-type="java.lang.String"
     />
 
-    <bean class="com.example.integrationtest.service.AuditService" id="auditService"/>
+    <bean class="com.example.integrationtest.flow.AuditService" id="auditService"/>
 
     <int:channel id="inputChannel"/>
 

@@ -10,11 +10,14 @@ public class FieldUtil {
     public static final String BOOLEAN = "BOOLEAN";
     public static final String MAP = "MAP";
     public static final String ARRAY = "ARRAY";
+    public static final String FLOAT = "FLOAT";
 
     private FieldUtil() {}
 
     public static String identifyType(Object type){
-        if(type instanceof Number){
+        if (type instanceof Float){
+            return FLOAT;
+        }else if(type instanceof Number){
             return NUMBER;
         }else if(type instanceof String){
             return STRING;
