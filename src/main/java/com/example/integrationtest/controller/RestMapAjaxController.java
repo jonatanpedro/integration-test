@@ -4,10 +4,7 @@ import com.example.integrationtest.dto.DataMap;
 import com.example.integrationtest.dto.Flow;
 import com.example.integrationtest.dto.ServiceMapParameterDTO;
 import com.example.integrationtest.enums.ServiceType;
-import com.example.integrationtest.service.DbMapService;
-import com.example.integrationtest.service.FlowService;
-import com.example.integrationtest.service.RestMapService;
-import com.example.integrationtest.service.SoapMapService;
+import com.example.integrationtest.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +22,7 @@ public class RestMapAjaxController {
     public static final String EMPTY = "";
 
     @Autowired
-    private RestMapService restMapService;
-
-    @Autowired
-    private SoapMapService soapMapService;
+    private MapServiceFactory mapServiceFactory;
 
     @Autowired
     private DbMapService dbMapService;
@@ -47,11 +41,8 @@ public class RestMapAjaxController {
         Map<String, DataMap> outPutMap = null;
 
         if (param != null && (param.getUrl() != null && !EMPTY.equals(param.getUrl()))) {
-            if (ServiceType.REST == param.getServiceType()) {
-                outPutMap = restMapService.retrieveRestMap(param.getUrl());
-            } else {
-                outPutMap = soapMapService.retrieveSoapMap(param.getUrl());
-            }
+            MapService mapService = mapServiceFactory.getService(param.getServiceType());
+            outPutMap = mapService.retrieveMap(param.getUrl());
         }
 
         return outPutMap;

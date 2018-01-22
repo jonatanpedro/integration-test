@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class SoapMapService {
+public class SoapMapService implements MapService {
 
-    public Map<String, DataMap> retrieveSoapMap(String url){
+    public Map<String, DataMap> retrieveMap(String url){
         Map<String, DataMap> result = new HashMap<>();
         WSDLParser parser = new WSDLParser();
         Definitions wsdl = parser.parse(url);

@@ -38,7 +38,8 @@ $( "#btnSalvar" ).on( "click", function () {
         useConsole: $( "#console" ).is(':checked'),
         selectedTable: selectedTable,
         sourceMap: updateRestMap(restMap),
-        destinationMap: updateDestinationMap(mapColumns)
+        destinationMap: updateDestinationMap(mapColumns),
+        serviceType: urlBase.serviceType
     }
 
     $.ajax({
