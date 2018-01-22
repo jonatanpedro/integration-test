@@ -21,7 +21,6 @@ public class RestMapService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public Map<String, DataMap> retrieveRestMap(String url){
-
         Map<String, DataMap> result = new HashMap<>();
         try {
             String responseJson = new RestTemplate().getForObject(url, String.class);
