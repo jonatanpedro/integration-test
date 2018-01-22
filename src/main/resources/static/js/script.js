@@ -72,7 +72,10 @@ $( "#bd" ).on( "click", function () {
 
 $( "#btnExecuteMap" ).on( "click", function () {
 
-    urlBase = { "url" : $("#restSource").val()};
+    urlBase = {
+        "url" : $("#serviceSource").val(),
+        "serviceType": $('input:radio[name=serviceType]:checked').val()
+    };
 
     $.ajax({
         type: "POST",
@@ -89,7 +92,7 @@ $( "#btnExecuteMap" ).on( "click", function () {
                 for(let i=0; i < keys.length; i++){
                     $('#tblrest').append('<tr><td>' + keys[i] + '</td><td>' + data[keys[i]].source + '</td><td>' + getSelectDataTypes(datatypes, keys[i]) +'</td></tr>')
                 }
-                $("#restSource").val("");
+                $("#serviceSource").val("");
             });
         },
         error: function (e) {

@@ -4,10 +4,12 @@ import com.example.integrationtest.dto.DataMap;
 import com.predic8.schema.*;
 import com.predic8.wsdl.Definitions;
 import com.predic8.wsdl.WSDLParser;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class SoapMapService {
 
     public Map<String, DataMap> retrieveSoapMap(String url){
