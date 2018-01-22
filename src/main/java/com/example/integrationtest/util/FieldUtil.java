@@ -1,7 +1,9 @@
 package com.example.integrationtest.util;
 
+import java.lang.reflect.Array;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FieldUtil {
 
@@ -31,4 +33,24 @@ public class FieldUtil {
             return null;
         }
     }
+
+    public static Class<?> identifyType(String type){
+        switch (type){
+            case FLOAT:
+                return Float.class;
+            case NUMBER:
+                return Number.class;
+            case STRING:
+                return String.class;
+            case ARRAY:
+                return Array.class;
+            case BOOLEAN:
+                return Boolean.class;
+            case MAP:
+                return Map.class;
+            default:
+                return null;
+        }
+    }
+
 }
