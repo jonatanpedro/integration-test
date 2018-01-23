@@ -3,10 +3,7 @@ package com.example.integrationtest.service;
 import com.example.integrationtest.dto.DataMap;
 import com.example.integrationtest.dto.MapSoapParameterDTO;
 import com.predic8.schema.*;
-import com.predic8.wsdl.Definitions;
-import com.predic8.wsdl.Operation;
-import com.predic8.wsdl.PortType;
-import com.predic8.wsdl.WSDLParser;
+import com.predic8.wsdl.*;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -34,22 +31,43 @@ public class SoapMapService {
 
     private void parseOperation(Map<String, DataMap> result, Definitions wsdl, Operation operation) {
         String outputName = operation.getOutput().getName();
-        wsdl.getLocalTypes().getSchemas().forEach(schema -> parseSchema(result, outputName, schema));
+        if (outputName != null) {
+            wsdl.getLocalTypes().getSchemas().forEach(schema -> parseSchemaByOutputName(result, outputName, schema));
+        } else {
+            String outputMessage = operation.getOutput().getMessagePrefixedName().getLocalName();
+            wsdl.getLocalTypes().getSchemas().forEach(schema -> parseSchemaByOutputMessage(result, outputMessage, schema, wsdl));
+        }
     }
 
-    private void parseSchema(Map<String, DataMap> result, String outputName, Schema schema) {
+    private void parseSchemaByOutputMessage(Map<String, DataMap> result, String outputMessageName, Schema schema, Definitions wsdl) {
+        Optional<Message> optionalOutputMessage = getOutputMessage(outputMessageName, wsdl);
+        optionalOutputMessage.ifPresent(outputMessage -> parseOutputMessage(result, schema, outputMessage));
+    }
+
+    private void parseOutputMessage(Map<String, DataMap> result, Schema schema, Message outputMessage) {
+        outputMessage.getParts().forEach(part -> parseComplexType(result, schema, part.getTypePN().getLocalName()));
+    }
+
+    private Optional<Message> getOutputMessage(String outputMessage, Definitions wsdl) {
+        return wsdl.getMessages()
+                .stream()
+                .filter(message -> message.getName().equals(outputMessage))
+                .findFirst();
+
+    }
+
+    private void parseSchemaByOutputName(Map<String, DataMap> result, String outputName, Schema schema) {
         Optional<Element> optionalOutputElement = getOutputElement(outputName, schema);
         optionalOutputElement.ifPresent(outputElement -> parseOutputElement(result, schema, outputElement));
     }
 
     private void parseOutputElement(Map<String, DataMap> result, Schema schema, Element outputElement) {
         List<SchemaComponent> outputComponents = ((Sequence) ((ComplexType) outputElement.getEmbeddedType()).getModel()).getParticles();
-        outputComponents.forEach(outputComponent -> parseOutputComponent(result, schema, outputComponent));
+        outputComponents.forEach(outputComponent -> parseComplexType(result, schema, outputComponent.getName()));
     }
 
-    private void parseOutputComponent(Map<String, DataMap> result, Schema schema, SchemaComponent outputComponent) {
-        String componentName = outputComponent.getName();
-        List<ComplexType> outputComponentTypes = getOutputComponentTypes(schema, componentName);
+    private void parseComplexType(Map<String, DataMap> result, Schema schema, String complexTypeName) {
+        List<ComplexType> outputComponentTypes = getOutputComponentTypes(schema, complexTypeName);
         outputComponentTypes.forEach(outputComponentType -> getComponentAttributes(result, outputComponentType));
     }
 
@@ -63,9 +81,21 @@ public class SoapMapService {
     }
 
     private List<ComplexType> getOutputComponentTypes(Schema schema, String componentName) {
-        return schema.getComplexTypes()
+        List<ComplexType> complexTypes = schema.getComplexTypes()
                 .stream()
                 .filter(complexType -> complexType.getName().equals(componentName))
+                .collect(Collectors.toList());
+        if (complexTypes.isEmpty()) {
+            complexTypes = getLocalTypesFromImportedSchemas(schema);
+        }
+        return complexTypes;
+    }
+
+    private List<ComplexType> getLocalTypesFromImportedSchemas(Schema schema) {
+        return schema.getImportedSchemas()
+                .stream()
+                .map(Schema::getComplexTypes)
+                .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
 
