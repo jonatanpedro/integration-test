@@ -16,10 +16,7 @@
 
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link active" href="#">REST</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">SOAP</a>
+        <a class="nav-link active" href="#">Mapeamento</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/flows">Fluxos</a>
@@ -42,6 +39,18 @@
                     <div class="col-md-3">
                         <label class="radio-inline"><input type="radio" name="serviceType" value="REST">REST</label>
                         <label class="radio-inline" style="padding-left: 5px"><input type="radio" name="serviceType" value="SOAP">SOAP</label>
+                    </div>
+                </div>
+                <div class="row" id="rowOperation">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <input class="form-control" id="port" placeholder="Porta"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <input class="form-control" id="operation" placeholder="Operação"/>
+                        </div>
                     </div>
                 </div>
                 <div class="row">

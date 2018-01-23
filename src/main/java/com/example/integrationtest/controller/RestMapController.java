@@ -1,7 +1,7 @@
 package com.example.integrationtest.controller;
 
 import com.example.integrationtest.dto.Flow;
-import com.example.integrationtest.dto.ServiceMapParameterDTO;
+import com.example.integrationtest.dto.MapRestParameterDTO;
 import com.example.integrationtest.repository.FlowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ public class RestMapController {
 
     @RequestMapping("/")
     public String getIndex(Model model){
-        model.addAttribute("param", new ServiceMapParameterDTO());
+        model.addAttribute("param", new MapRestParameterDTO());
         return MAPPER_VIEW;
     }
 

@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class RestMapService implements MapService {
+public class RestMapService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

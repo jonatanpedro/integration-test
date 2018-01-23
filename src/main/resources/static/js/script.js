@@ -71,6 +71,19 @@ $( "#bd" ).on( "click", function () {
     $( "#btnRecColunas" ).prop('disabled', !$( "#bd" ).is(':checked'));
 } );
 
+$(document).ready(function() {
+    $('#rowOperation').hide();
+});
+
+$('input[type=radio][name=serviceType]').change(function() {
+    if (this.value == 'REST') {
+        $('#rowOperation').hide();
+    }
+    else {
+        $('#rowOperation').show();
+    }
+});
+
 $( "#btnExecuteMap" ).on( "click", function () {
 
     urlBase = {
@@ -78,10 +91,17 @@ $( "#btnExecuteMap" ).on( "click", function () {
         "serviceType": $('input:radio[name=serviceType]:checked').val()
     };
 
+    var endpoint = '/rest/retrieve-rest';
+    if (urlBase.serviceType === 'SOAP') {
+        urlBase.operation = $('#operation').val();
+        urlBase.port = $('#port').val();
+        endpoint = '/rest/retrieve-soap';
+    }
+
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/rest/retrieve",
+        url: endpoint,
         data: JSON.stringify(urlBase),
         dataType: 'json',
         timeout: 600000,

@@ -2,9 +2,12 @@ package com.example.integrationtest.controller;
 
 import com.example.integrationtest.dto.DataMap;
 import com.example.integrationtest.dto.Flow;
-import com.example.integrationtest.dto.ServiceMapParameterDTO;
-import com.example.integrationtest.enums.ServiceType;
-import com.example.integrationtest.service.*;
+import com.example.integrationtest.dto.MapRestParameterDTO;
+import com.example.integrationtest.dto.MapSoapParameterDTO;
+import com.example.integrationtest.service.DbMapService;
+import com.example.integrationtest.service.FlowService;
+import com.example.integrationtest.service.RestMapService;
+import com.example.integrationtest.service.SoapMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import static com.example.integrationtest.util.FieldUtil.*;
 
 @RestController
@@ -22,7 +26,10 @@ public class RestMapAjaxController {
     public static final String EMPTY = "";
 
     @Autowired
-    private MapServiceFactory mapServiceFactory;
+    private RestMapService restMapService;
+
+    @Autowired
+    private SoapMapService soapMapService;
 
     @Autowired
     private DbMapService dbMapService;
@@ -35,14 +42,25 @@ public class RestMapAjaxController {
         return dbMapService.retrieveDbTables();
     }
 
-    @PostMapping("/retrieve")
-    public  Map<String, DataMap> mapRequestUrl(@RequestBody ServiceMapParameterDTO param) {
+    @PostMapping("/retrieve-rest")
+    public  Map<String, DataMap> mapRestRequestUrl(@RequestBody MapRestParameterDTO param) {
 
         Map<String, DataMap> outPutMap = null;
 
         if (param != null && (param.getUrl() != null && !EMPTY.equals(param.getUrl()))) {
-            MapService mapService = mapServiceFactory.getService(param.getServiceType());
-            outPutMap = mapService.retrieveMap(param.getUrl());
+            outPutMap = restMapService.retrieveMap(param.getUrl());
+        }
+
+        return outPutMap;
+    }
+
+    @PostMapping("/retrieve-soap")
+    public  Map<String, DataMap> mapSoapRequestUrl(@RequestBody MapSoapParameterDTO param) {
+
+        Map<String, DataMap> outPutMap = null;
+
+        if (param != null && (param.getUrl() != null && !EMPTY.equals(param.getUrl()))) {
+            outPutMap = soapMapService.retrieveMap(param);
         }
 
         return outPutMap;
