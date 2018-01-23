@@ -2,11 +2,9 @@ package com.example.integrationtest.controller;
 
 import com.example.integrationtest.dto.DataMap;
 import com.example.integrationtest.dto.Flow;
-import com.example.integrationtest.dto.MapRestParameterDTO;
-import com.example.integrationtest.repository.DatabaseMetaRepository;
-import com.example.integrationtest.service.DbMapService;
-import com.example.integrationtest.service.FlowService;
-import com.example.integrationtest.service.RestMapService;
+import com.example.integrationtest.dto.ServiceMapParameterDTO;
+import com.example.integrationtest.enums.ServiceType;
+import com.example.integrationtest.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +22,7 @@ public class RestMapAjaxController {
     public static final String EMPTY = "";
 
     @Autowired
-    private RestMapService restMapService;
+    private MapServiceFactory mapServiceFactory;
 
     @Autowired
     private DbMapService dbMapService;
@@ -38,12 +36,13 @@ public class RestMapAjaxController {
     }
 
     @PostMapping("/retrieve")
-    public  Map<String, DataMap> mapRequestUrl(@RequestBody MapRestParameterDTO param) {
+    public  Map<String, DataMap> mapRequestUrl(@RequestBody ServiceMapParameterDTO param) {
 
         Map<String, DataMap> outPutMap = null;
 
         if (param != null && (param.getUrl() != null && !EMPTY.equals(param.getUrl()))) {
-            outPutMap = restMapService.retrieveRestMap(param.getUrl());
+            MapService mapService = mapServiceFactory.getService(param.getServiceType());
+            outPutMap = mapService.retrieveMap(param.getUrl());
         }
 
         return outPutMap;

@@ -16,11 +16,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class RestMapService {
+public class RestMapService implements MapService {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public Map<String, DataMap> retrieveRestMap(String url){
+    public Map<String, DataMap> retrieveMap(String url){
         Map<String, DataMap> result = new HashMap<>();
         try {
             String responseJson = new RestTemplate().getForObject(url, String.class);

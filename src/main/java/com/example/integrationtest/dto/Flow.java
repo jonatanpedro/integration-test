@@ -1,5 +1,6 @@
 package com.example.integrationtest.dto;
 
+import com.example.integrationtest.enums.ServiceType;
 import org.springframework.data.annotation.Id;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ public class Flow {
     private String selectedTable;
     private Map<String, DataMap> sourceMap;
     private Map<String, DataMap> destinationMap;
+    private ServiceType serviceType;
 
     public String getId() {
         return id;
@@ -69,6 +71,14 @@ public class Flow {
 
     public void setDestinationMap(Map<String, DataMap> destinationMap) {
         this.destinationMap = destinationMap;
+    }
+
+    public ServiceType getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     @Override
