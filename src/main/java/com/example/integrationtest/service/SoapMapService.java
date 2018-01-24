@@ -53,7 +53,6 @@ public class SoapMapService {
                 .stream()
                 .filter(message -> message.getName().equals(outputMessage))
                 .findFirst();
-
     }
 
     private void parseSchemaByOutputName(Map<String, DataMap> result, String outputName, Schema schema) {
