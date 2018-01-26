@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransformerFactory {
     public GenericTransformer createTransformer(Class<? extends GenericTransformer> transtormerClass){
-        if(transtormerClass.getClass().getName().equals(RestMapperTransformationService.class.getName())){
+        if(transtormerClass.getName().equals(RestMapperTransformationService.class.getName())){
             return new RestMapperTransformationService();
         }
         return null;

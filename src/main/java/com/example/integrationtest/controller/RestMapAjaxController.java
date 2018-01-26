@@ -3,8 +3,10 @@ package com.example.integrationtest.controller;
 import com.example.integrationtest.dto.DataMap;
 import com.example.integrationtest.dto.Flow;
 import com.example.integrationtest.dto.ServiceMapParameterDTO;
-import com.example.integrationtest.enums.ServiceType;
-import com.example.integrationtest.service.*;
+import com.example.integrationtest.service.DbMapService;
+import com.example.integrationtest.service.FlowService;
+import com.example.integrationtest.service.MapService;
+import com.example.integrationtest.service.MapServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import static com.example.integrationtest.util.FieldUtil.*;
 
 @RestController
@@ -56,6 +59,11 @@ public class RestMapAjaxController {
     @GetMapping(value = "/datatypes")
     public List<String> requestDataTypes(){
         return Stream.of(BOOLEAN, STRING, NUMBER, FLOAT).collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/executeflow/{flowid}")
+    public String executeFlow(@PathVariable("flowid") String flowid){
+        return flowService.executeFlow(flowid);
     }
 
     @PostMapping("/saveflow")

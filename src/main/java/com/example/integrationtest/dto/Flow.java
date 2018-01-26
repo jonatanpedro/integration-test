@@ -9,6 +9,7 @@ public class Flow {
 
     @Id
     private String id;
+    private String flowId;
     private String urlBase;
     private Boolean useTable;
     private Boolean useConsole;
@@ -23,6 +24,14 @@ public class Flow {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFlowId() {
+        return flowId;
+    }
+
+    public void setFlowId(String flowId) {
+        this.flowId = flowId;
     }
 
     public String getUrlBase() {
@@ -85,12 +94,14 @@ public class Flow {
     public String toString() {
         return "Flow{" +
                 "id='" + id + '\'' +
+                ", flowId='" + flowId + '\'' +
                 ", urlBase='" + urlBase + '\'' +
                 ", useTable=" + useTable +
                 ", useConsole=" + useConsole +
                 ", selectedTable='" + selectedTable + '\'' +
                 ", sourceMap=" + sourceMap +
                 ", destinationMap=" + destinationMap +
+                ", serviceType=" + serviceType +
                 '}';
     }
 }

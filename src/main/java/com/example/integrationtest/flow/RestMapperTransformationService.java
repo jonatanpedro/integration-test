@@ -27,6 +27,7 @@ public class RestMapperTransformationService implements GenericTransformer<Messa
     public Message<?> transform(Message<?> message) {
 
         try {
+            /*Map<String, Object> objectMap = new ObjectMapper().readValue((String)message.getPayload(), new TypeReference<Map<String, Object>>(){});*/
             Map<String, Object> objectMap = (Map<String, Object>) message.getPayload();
             Flow flow = (Flow) message.getHeaders().get("flow");
             Map<String, DataMap> conversions = flow

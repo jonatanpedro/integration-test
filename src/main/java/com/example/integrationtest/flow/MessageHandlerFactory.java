@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageHandlerFactory {
     public AbstractMessageHandler createMessageHandler(Class<? extends AbstractMessageHandler> handlerClass){
-        if(handlerClass.getClass().getName().equals(ConsoleMessagehandler.class.getName())){
+        if(handlerClass.getName().equals(ConsoleMessagehandler.class.getName())){
             return new ConsoleMessagehandler();
         }
         /*else if(handlerClass.getClass().getName().equals(JdbcGenericMessageHandler.class.getName())){

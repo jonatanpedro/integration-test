@@ -16,10 +16,7 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" href="/">REST</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">SOAP</a>
+                <a class="nav-link" href="/">Mapeamentos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="#">Fluxos</a>
@@ -51,7 +48,7 @@
                             <td th:text="${flow.useConsole}">true</td>
                             <td>
                                 <div class="form-group">
-                                    <button id="btnExecuteFlow" class="btn btn-primary btn-default" type="button">
+                                    <button th:id="${flow.id}" id="btnExecuteFlow" class="btn btn-info btn-default" type="button">
                                         <span class="fa fa-cog"></span>
                                         Executar
                                     </button>

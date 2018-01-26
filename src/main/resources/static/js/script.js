@@ -116,10 +116,13 @@ $( "#btnRecColunas" ).on( "click", function () {
 });
 
 
-$( "#btnExecuteFlow" ).on( "click", function () {
-
+$('#tblrest').on('click', '.btn-info', function(){
+    console.log(this);
+    $.get("/rest/executeflow/" + this.id, function (data) {
+        alert(data);
+        console.log(data);
+    });
 });
-
 
 function geSelectFields(map, rowname){
 

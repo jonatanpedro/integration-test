@@ -2,7 +2,6 @@ package com.example.integrationtest.flow;
 
 import com.example.integrationtest.dto.Flow;
 import org.springframework.integration.jdbc.JdbcMessageHandler;
-import org.springframework.jdbc.core.JdbcOperations;
 
 import javax.sql.DataSource;
 import java.util.AbstractMap;
@@ -26,14 +25,15 @@ public class JdbcGenericMessageHandler extends JdbcMessageHandler {
                 "INSERT INTO " +
                         flow.getSelectedTable() +
                         "( " +
-                        fields.stream().map(entry -> entry.getKey()).collect(Collectors.joining(",")) +
+                        fields.stream().map(Map.Entry::getKey).collect(Collectors.joining(",")) +
                         " ) VALUES ( " +
                         fields.stream().map(entry -> "?").collect(Collectors.joining(",")) +
                         " )"
         );
 
         this.setPreparedStatementSetter((preparedStatement, message) -> {
-            Map<String, Object> objectMap = (Map<String, Object>) message.getPayload();
+
+            final Map<String, Object> objectMap = (Map<String, Object>)message.getPayload();
 
             List<Map.Entry<String, ?>> columns = flow.getDestinationMap()
                     .entrySet()
