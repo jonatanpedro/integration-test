@@ -58,10 +58,11 @@ public class FlowService {
         Flow flow = repository.findById(id).orElse(null);
 
         IntegrationFlowContext.IntegrationFlowRegistrationBuilder registration = context.registration(createIntegrationFlow(flow));
+        registration.register();
 
         gateway.execute(flow.getId());
         Date date = new Date();
-        return String.format("Executado em %ta %tb %td %tT %tY", date, date, date, date, date);
+        return String.format("Executado em [%ta %tb %td %tT %tY]", date, date, date, date, date);
     }
 
     public IntegrationFlow createIntegrationFlow(Flow flow){
