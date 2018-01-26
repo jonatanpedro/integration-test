@@ -2,7 +2,7 @@ package com.example.integrationtest.dto;
 
 import com.example.integrationtest.enums.ServiceType;
 
-public class ServiceMapParameterDTO {
+public class MapRestParameterDTO {
     private String url;
     private ServiceType serviceType;
 
