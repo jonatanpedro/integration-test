@@ -8,11 +8,6 @@ import com.example.integrationtest.service.DbMapService;
 import com.example.integrationtest.service.FlowService;
 import com.example.integrationtest.service.RestMapService;
 import com.example.integrationtest.service.SoapMapService;
-import com.example.integrationtest.dto.ServiceMapParameterDTO;
-import com.example.integrationtest.service.DbMapService;
-import com.example.integrationtest.service.FlowService;
-import com.example.integrationtest.service.MapService;
-import com.example.integrationtest.service.MapServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
